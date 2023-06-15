@@ -1,4 +1,4 @@
-import Editor from 'components/markdownEditor'
+import PostDetailContainer from 'containers/post/Detail'
 
-const PostDetailPage = () => <Editor />
+const PostDetailPage = () => <PostDetailContainer />
 export default PostDetailPage

@@ -2,9 +2,7 @@ import { CheckOutlined, CloseOutlined, UploadOutlined } from '@ant-design/icons'
 import { Button, Col, Form, Input, Row, Space, Switch, Upload, message } from 'antd'
 import { useRef, useState } from 'react'
 
-const onFinishFailed = (errorInfo) => {
-  console.log('Failed:', errorInfo)
-}
+const onFinishFailed = (errorInfo) => {}
 
 const props = {
   name: 'file',
@@ -18,9 +16,7 @@ const FormUpload = ({ onSubmit }) => {
   const formRef = useRef()
 
   const handleChange = (info) => {
-    console.log('info', info)
     if (info.file.status !== 'uploading') {
-      console.log(info.file, info.fileList)
     }
     if (info.file.status === 'done') {
       formRef.current?.setFieldsValue({
@@ -32,10 +28,18 @@ const FormUpload = ({ onSubmit }) => {
     }
   }
 
+  const handleRemove = (info) => {
+    formRef.current?.setFieldsValue({
+      link: '',
+    })
+  }
+
   const handleChangeSwitch = (value) => {
     setUpload(value)
+    formRef.current?.setFieldsValue({
+      link: '',
+    })
   }
-  console.log('process.env', process.env)
   return (
     <Form
       ref={formRef}
@@ -82,7 +86,7 @@ const FormUpload = ({ onSubmit }) => {
 
         <Col xs={24} md={12}>
           {isUpload && (
-            <Upload {...props} onChange={handleChange}>
+            <Upload {...props} onChange={handleChange} onRemove={handleRemove}>
               <Button icon={<UploadOutlined />}>Click to Upload</Button>
             </Upload>
           )}

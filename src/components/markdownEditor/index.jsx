@@ -1,12 +1,11 @@
 // import react, react-markdown-editor-lite, and a markdown parser you like
 import ImagePlugin from 'components/markdownEditor/plugins/imagePlugin'
 import MarkdownIt from 'markdown-it'
+import insert from 'markdown-it-ins'
 import { useEffect, useRef, useState } from 'react'
 import ReactMarkdownEditorLite from 'react-markdown-editor-lite'
 import 'react-markdown-editor-lite/lib/index.css'
 import { subscribe, unsubscribe } from 'utils/event'
-import insert from 'markdown-it-ins'
-import { Modal } from 'antd'
 import ImageModal from './modals/imageModal'
 
 ReactMarkdownEditorLite.use(ImagePlugin)
