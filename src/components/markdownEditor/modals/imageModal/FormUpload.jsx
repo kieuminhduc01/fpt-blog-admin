@@ -4,7 +4,7 @@ import { useRef, useState } from 'react'
 
 const onFinishFailed = (errorInfo) => {}
 
-const props = {
+const uploadProps = {
   name: 'file',
   action: `${process.env.REACT_APP_API_URL}api/File/ContentImage`,
   maxCount: 1,
@@ -86,7 +86,7 @@ const FormUpload = ({ onSubmit }) => {
 
         <Col xs={24} md={12}>
           {isUpload && (
-            <Upload {...props} onChange={handleChange} onRemove={handleRemove}>
+            <Upload {...uploadProps} onChange={handleChange} onRemove={handleRemove}>
               <Button icon={<UploadOutlined />}>Click to Upload</Button>
             </Upload>
           )}
