@@ -1,25 +1,31 @@
 import { FileDoneOutlined, SettingOutlined } from '@ant-design/icons'
-import { Breadcrumb, Layout, Menu } from 'antd'
+import { Layout, Menu } from 'antd'
 import { Content, Footer, Header } from 'antd/es/layout/layout'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
-const items = [
+const menuItems = [
   {
     label: 'Bài viết',
     key: 'post',
     icon: <FileDoneOutlined />,
+    link: '/post',
   },
   {
     label: 'Cài đặt chung',
     key: 'setting',
     icon: <SettingOutlined />,
+    link: '/setting',
   },
 ]
 
 const HeaderFooterLayout = ({ children }) => {
   const [current, setCurrent] = useState('mail')
+  const navigate = useNavigate()
+
   const onClick = (e) => {
-    console.log('click ', e)
+    const { link } = menuItems.find((item) => item.key === e.key) || {}
+    navigate(link)
     setCurrent(e.key)
   }
   return (
@@ -37,14 +43,9 @@ const HeaderFooterLayout = ({ children }) => {
         }}
       >
         <div className="demo-logo" />
-        <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} />
+        <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={menuItems} />
       </Header>
       <Content className="site-layout" style={{ padding: '0 50px' }}>
-        <Breadcrumb style={{ margin: '16px 0' }}>
-          <Breadcrumb.Item>Home</Breadcrumb.Item>
-          <Breadcrumb.Item>List</Breadcrumb.Item>
-          <Breadcrumb.Item>App</Breadcrumb.Item>
-        </Breadcrumb>
         {children}
       </Content>
       <Footer style={{ textAlign: 'center' }}>Ant Design ©2023 Created by Ant UED</Footer>

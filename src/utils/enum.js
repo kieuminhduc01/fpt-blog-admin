@@ -12,3 +12,9 @@ export const blogCategoryType = [
     title: 'MyCorner',
   },
 ]
+
+export const POST_DETAIL_MODE = {
+  VIEW: 1,
+  CREATE: 2,
+  UPDATE: 3,
+}

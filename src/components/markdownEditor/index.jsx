@@ -5,8 +5,10 @@ import insert from 'markdown-it-ins'
 import { useEffect, useRef, useState } from 'react'
 import ReactMarkdownEditorLite from 'react-markdown-editor-lite'
 import 'react-markdown-editor-lite/lib/index.css'
+import { convertLinkForMarkdown } from 'utils/converter'
 import { subscribe, unsubscribe } from 'utils/event'
 import ImageModal from './modals/imageModal'
+import MarkdownEditorWrapper from 'components/markdownEditor/MarkdownEditor.styled'
 
 ReactMarkdownEditorLite.use(ImagePlugin)
 const plugins = [
@@ -36,7 +38,7 @@ const mdParser = new MarkdownIt({
   highlight(str, lang) {},
 }).use(insert)
 
-export default function Editor() {
+export default function Editor({ disabled, value, onChange }) {
   const [openModal, setOpenModal] = useState(false)
   const editorRef = useRef()
   useEffect(() => {
@@ -47,10 +49,18 @@ export default function Editor() {
       unsubscribe('openImageModal')
     }
   }, [])
+
+  const onEditorChange = ({ html, text }) => {
+    console.log('handleEditorChange', html, text)
+    onChange(text)
+  }
+
   return (
-    <>
+    <MarkdownEditorWrapper disabled={disabled}>
       <ReactMarkdownEditorLite
-        style={{ height: '500px' }}
+        value={value}
+        onChange={onEditorChange}
+        style={{ height: '600px' }}
         ref={editorRef}
         plugins={plugins}
         renderHTML={(text) => mdParser.render(text)}
@@ -61,11 +71,11 @@ export default function Editor() {
             setOpenModal(false)
           }}
           onSubmit={(value) => {
-            editorRef.current.insertText(`![${value.title}](${value.link})`)
+            editorRef.current.insertText(convertLinkForMarkdown(value.title, value.link))
             setOpenModal(false)
           }}
         />
       )}
-    </>
+    </MarkdownEditorWrapper>
   )
 }

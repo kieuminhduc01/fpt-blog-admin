@@ -53,7 +53,7 @@ const FormUpload = ({ onSubmit }) => {
       style={{
         maxWidth: 1000,
       }}
-      onFinish={onSubmit}
+      onFinish={(value) => onSubmit({ ...value, link: value.link })}
       onFinishFailed={onFinishFailed}
       autoComplete="off"
     >
@@ -99,10 +99,6 @@ const FormUpload = ({ onSubmit }) => {
           {
             required: true,
             message: 'Nhập đường dẫn!',
-          },
-          {
-            type: 'url',
-            message: 'Nhập đúng định dạng đường dẫn.',
           },
         ]}
       >
