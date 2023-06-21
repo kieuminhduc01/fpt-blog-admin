@@ -1,11 +1,12 @@
 import { request } from 'api/request'
 
-export const apiBlogPostCreate = (data) =>
-  request({
+export const apiBlogPostCreate = (data) => {
+  return request({
     url: '/BlogPost',
     method: 'post',
     data,
   })
+}
 
 export const apiBlogPostPaging = (data) => {
   return request({
@@ -35,5 +36,3 @@ export const apiBlogPostPatch = (data) =>
     method: 'patch',
     data,
   })
-
-

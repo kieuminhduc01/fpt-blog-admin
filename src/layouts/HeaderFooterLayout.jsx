@@ -1,6 +1,7 @@
-import { FileDoneOutlined, SettingOutlined } from '@ant-design/icons'
+import { FileDoneOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons'
 import { Layout, Menu } from 'antd'
 import { Content, Footer, Header } from 'antd/es/layout/layout'
+import Cookies from 'js-cookie'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -9,13 +10,26 @@ const menuItems = [
     label: 'Bài viết',
     key: 'post',
     icon: <FileDoneOutlined />,
-    link: '/post',
   },
   {
     label: 'Cài đặt chung',
     key: 'setting',
     icon: <SettingOutlined />,
-    link: '/setting',
+  },
+  {
+    label: 'Admin',
+    key: 'user',
+    icon: <UserOutlined />,
+    children: [
+      {
+        key: 'logout',
+        label: 'Đăng xuất',
+      },
+      {
+        key: 'changePassword',
+        label: 'Đổi mật khẩu',
+      },
+    ],
   },
 ]
 
@@ -24,8 +38,25 @@ const HeaderFooterLayout = ({ children }) => {
   const navigate = useNavigate()
 
   const onClick = (e) => {
-    const { link } = menuItems.find((item) => item.key === e.key) || {}
-    navigate(link)
+    switch (e.key) {
+      case 'post':
+        navigate('/post')
+        break
+      case 'setting':
+        navigate('/setting')
+        break
+      case 'logout':
+        Cookies.remove('jwt')
+
+        navigate('/login')
+        break
+      case 'changePassword':
+        navigate('/changePass')
+        break
+      default:
+        break
+    }
+
     setCurrent(e.key)
   }
   return (

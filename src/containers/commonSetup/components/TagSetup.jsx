@@ -1,4 +1,4 @@
-import { apiTagAll, apiTagDelete, apiTagPut } from 'api/tagAPI'
+import { apiTagAll, apiTagCreate, apiTagDelete, apiTagPut } from 'api/tagAPI'
 import DTag from 'components/Base/DTag'
 import { useEffect, useRef, useState } from 'react'
 import { Card, Input, Tag, message } from 'antd'
@@ -22,7 +22,7 @@ const TagSetupBlock = () => {
           content: err.response.data.Detail,
         })
       })
-  }, [])
+  }, [messageApi])
 
   useEffect(() => {
     if (isInputNewTag) {
@@ -76,6 +76,29 @@ const TagSetupBlock = () => {
       })
   }
 
+  const handleCreateTag = (e) => {
+    console.log('tags', e.target.value)
+    const data = {
+      title: e.target.value,
+    }
+    apiTagCreate(data)
+      .then((res) => {
+        setTags((pre) => [...pre, res.data.result])
+
+        messageApi.open({
+          type: 'success',
+          content: 'Thêm nhãn mới thành công',
+        })
+      })
+      .catch((err) => {
+        messageApi.open({
+          type: 'error',
+          content: err.response.data.Detail,
+        })
+      })
+      .finally(() => setIsInputNewTag(false))
+  }
+
   return (
     <Card size="small" title="Cài đặt nhãn">
       {contextHolder}
@@ -100,7 +123,7 @@ const TagSetupBlock = () => {
           style={{
             width: 100,
           }}
-          // onPressEnter={handlePressEnter}
+          onPressEnter={handleCreateTag}
           onBlur={() => setIsInputNewTag(false)}
         />
       ) : (

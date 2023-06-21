@@ -21,3 +21,11 @@ export const apiTagPut = (data) => {
     data,
   })
 }
+
+export const apiTagCreate = (data) => {
+  return request({
+    url: `/Tag`,
+    method: 'post',
+    data,
+  })
+}
