@@ -1,4 +1,4 @@
-import { Breadcrumb } from 'antd'
+import { Breadcrumb, Space } from 'antd'
 import TagSetupBlock from 'containers/commonSetup/components/TagSetup'
 import { Link } from 'react-router-dom'
 import ContactBlock from 'containers/commonSetup/components/Contact'
@@ -20,8 +20,10 @@ const CommonSetupContainer = () => {
   return (
     <>
       <PostListBreadcrumb />
-      <TagSetupBlock />
-      <ContactBlock />
+      <Space direction="vertical" size="middle">
+        <TagSetupBlock />
+        <ContactBlock />
+      </Space>
     </>
   )
 }

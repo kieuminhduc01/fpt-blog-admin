@@ -18,7 +18,7 @@ const LoginContainer = () => {
           type: 'success',
           content: 'Chào mừng bạn đến với trang quản lý nội dung',
         })
-        navigate('/post')
+        navigate('/')
       })
       .catch((err) => {
         messageApi.open({
