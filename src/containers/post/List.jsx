@@ -1,9 +1,9 @@
-import { Breadcrumb, Button, Col, Input, Row, Select, Tabs } from 'antd'
-import { apiBlogPostPaging } from 'api/blogPostAPI'
+import { Breadcrumb, Button, Col, Input, Row, Select, Tabs, message } from 'antd'
+import { apiBlogPostDelete, apiBlogPostPaging } from 'api/blogPostAPI'
 import { apiTagAll } from 'api/tagAPI'
 import DCard from 'components/Base/DCard'
-import { useEffect, useState } from 'react'
 import BlogPostsTable from 'containers/post/components/BlogPostTable'
+import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
 const PostListBreadcrumb = () => {
@@ -22,6 +22,7 @@ const PostListBreadcrumb = () => {
 const PostListContainer = () => {
   const DEFAULT_PAGE = 1
   const PER_PAGE = 5
+  const [messageApi, contextHolder] = message.useMessage()
 
   const [blogPosts, setBlogPosts] = useState({
     currentPage: DEFAULT_PAGE,
@@ -125,6 +126,22 @@ const PostListContainer = () => {
     }
   }
 
+  const callApiDeletePost = (id) => {
+    apiBlogPostDelete(id)
+      .then(() => {
+        callApiBlogPostPaging(blogPosts)
+        messageApi.open({
+          type: 'success',
+          content: 'Xóa bài viết thành công',
+        })
+      })
+      .catch((err) => {
+        messageApi.open({
+          type: 'error',
+          content: err.response.data.Detail,
+        })
+      })
+  }
   const handleSelectTag = (value) => {
     var newBlogPostsSate = {
       ...blogPosts,
@@ -154,6 +171,8 @@ const PostListContainer = () => {
 
   return (
     <>
+      {contextHolder}
+
       <PostListBreadcrumb />
       <DCard>
         <Row>
@@ -198,6 +217,7 @@ const PostListContainer = () => {
                   loading={loading}
                   total={blogPosts.total}
                   onChangePage={handleChangePage}
+                  onDelete={callApiDeletePost}
                 />
               ),
             },
@@ -211,6 +231,7 @@ const PostListContainer = () => {
                   loading={loading}
                   total={blogPosts.total}
                   onChangePage={handleChangePage}
+                  onDelete={callApiDeletePost}
                 />
               ),
             },
@@ -224,6 +245,7 @@ const PostListContainer = () => {
                   loading={loading}
                   total={blogPosts.total}
                   onChangePage={handleChangePage}
+                  onDelete={callApiDeletePost}
                 />
               ),
             },

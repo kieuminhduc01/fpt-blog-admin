@@ -1,37 +1,14 @@
-import { Button, Popconfirm, Table, Tag, message } from 'antd'
-import { apiBlogPostDelete } from 'api/blogPostAPI'
+import { Button, Popconfirm, Table, Tag } from 'antd'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-
-const BlogPostsTable = ({ current, rows, loading, total, onChangePage }) => {
+const BlogPostsTable = ({ current, rows, loading, total, onChangePage, onDelete }) => {
   const navigate = useNavigate()
-  const [messageApi, contextHolder] = message.useMessage()
   const [rowsData, setRowsData] = useState(rows)
 
   useEffect(() => {
     setRowsData(rows)
   }, [rows])
-
-  const callApiDeletePost = (id) => {
-    apiBlogPostDelete(id)
-      .then(() => {
-        console.log('rowsData', rowsData)
-        const newRowsData = rowsData.filter((row) => row.key !== id)
-        setRowsData(newRowsData)
-
-        messageApi.open({
-          type: 'success',
-          content: 'Xóa bài viết thành công',
-        })
-      })
-      .catch((err) => {
-        messageApi.open({
-          type: 'error',
-          content: err.response.data.Detail,
-        })
-      })
-  }
 
   const columns = [
     {
@@ -101,7 +78,7 @@ const BlogPostsTable = ({ current, rows, loading, total, onChangePage }) => {
         <Popconfirm
           title="Xóa bài viết"
           description="Bạn có muốn xóa bài viết này không?"
-          onConfirm={() => callApiDeletePost(record.key)}
+          onConfirm={() => onDelete(record.key)}
           okText="Yes"
           cancelText="No"
         >
@@ -115,8 +92,6 @@ const BlogPostsTable = ({ current, rows, loading, total, onChangePage }) => {
 
   return (
     <>
-      {contextHolder}
-
       <Table
         scroll={{ x: 1500 }}
         columns={columns}

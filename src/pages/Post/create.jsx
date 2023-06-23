@@ -17,7 +17,7 @@ const PostCreatePage = () => {
       .catch((err) => {
         messageApi.open({
           type: 'error',
-          content: err.response.data.Detail,
+          content: err?.response?.data?.Detail,
         })
       })
   }

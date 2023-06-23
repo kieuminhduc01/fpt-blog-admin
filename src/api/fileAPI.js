@@ -6,3 +6,10 @@ export const apiFileContentImage = (data) =>
     method: 'post',
     data,
   })
+
+export const apiFileCoverImage = (data) =>
+  request({
+    url: '/File/CoverImage',
+    method: 'post',
+    data,
+  })
