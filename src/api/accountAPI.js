@@ -24,6 +24,14 @@ export const apiAccountAuthPost = (data) => {
   })
 }
 
+export const apiAccountPaging = (data) => {
+  return request({
+    url: '/Account/Paging',
+    method: 'post',
+    data,
+  })
+}
+
 export const apiAccountAuthValidatePost = (token) => {
   return request({
     url: '/Account/Auth/Validate',

@@ -15,7 +15,7 @@ function App() {
   return (
     <Routes>
       <Route
-        path="/a"
+        path="/"
         element={
           <PrivateRoute>
             <HeaderFooterLayout>
