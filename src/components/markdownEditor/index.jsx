@@ -1,19 +1,22 @@
 // import react, react-markdown-editor-lite, and a markdown parser you like
 import ImagePlugin from 'components/markdownEditor/plugins/imagePlugin'
 import LinkPlugin from 'components/markdownEditor/plugins/linkPlugin'
+import TablePlugin from 'components/markdownEditor/plugins/tablePlugin'
 import MarkdownIt from 'markdown-it'
 import insert from 'markdown-it-ins'
 import { useEffect, useRef, useState } from 'react'
 import ReactMarkdownEditorLite from 'react-markdown-editor-lite'
 import 'react-markdown-editor-lite/lib/index.css'
-import { convertImageLinkForMarkdown } from 'utils/converter'
+import { convertImageLinkForMarkdown, generateTableMarkdownTemplate } from 'utils/converter'
 import { subscribe, unsubscribe } from 'utils/event'
-import ImageModal from './modals/imageModal'
+import ImageModal from 'components/markdownEditor/modals/imageModal'
 import MarkdownEditorWrapper from 'components/markdownEditor/MarkdownEditor.styled'
-import LinkModal from './modals/linkModal'
+import LinkModal from 'components/markdownEditor/modals/linkModal'
+import TableModal from 'components/markdownEditor/modals/tableModal'
 
 ReactMarkdownEditorLite.use(ImagePlugin)
 ReactMarkdownEditorLite.use(LinkPlugin)
+ReactMarkdownEditorLite.use(TablePlugin)
 const plugins = [
   'header',
   'font-bold',
@@ -24,7 +27,7 @@ const plugins = [
   'list-ordered',
   'block-quote',
   'block-wrap',
-  'table',
+  'd-table',
   'd-image',
   'd-link',
   'clear',
@@ -44,6 +47,8 @@ const mdParser = new MarkdownIt({
 export default function Editor({ disabled, value, onChange }) {
   const [openImageModal, setOpenImageModal] = useState(false)
   const [openLinkModal, setOpenLinkModal] = useState(false)
+  const [openTableModal, setOpenTableModal] = useState(false)
+
   const editorRef = useRef()
   useEffect(() => {
     subscribe('openImageModal', (_) => {
@@ -52,9 +57,13 @@ export default function Editor({ disabled, value, onChange }) {
     subscribe('openLinkModal', (_) => {
       setOpenLinkModal(true)
     })
+    subscribe('openTableModal', (_) => {
+      setOpenTableModal(true)
+    })
     return () => {
       unsubscribe('openImageModal')
       unsubscribe('openLinkModal')
+      unsubscribe('openTableModal')
     }
   }, [])
 
@@ -92,6 +101,17 @@ export default function Editor({ disabled, value, onChange }) {
           onSubmit={(value) => {
             editorRef.current.insertText(`[${value.title}](${value.link})`)
             setOpenLinkModal(false)
+          }}
+        />
+      )}
+      {openTableModal && (
+        <TableModal
+          onCancel={() => {
+            setOpenTableModal(false)
+          }}
+          onSubmit={(value) => {
+            editorRef.current.insertText(generateTableMarkdownTemplate(value.column, value.row))
+            setOpenTableModal(false)
           }}
         />
       )}
