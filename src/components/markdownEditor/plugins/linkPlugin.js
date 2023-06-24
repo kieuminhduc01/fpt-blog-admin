@@ -1,9 +1,8 @@
-import { publish } from 'utils/event'
-import * as React from 'react'
 import { PluginComponent } from 'react-markdown-editor-lite'
+import { publish } from 'utils/event'
 
-export default class Image extends PluginComponent {
-  static pluginName = 'd-image'
+export default class Link extends PluginComponent {
+  static pluginName = 'd-link'
   static align = 'left'
   static defaultConfig = {}
 
@@ -14,7 +13,7 @@ export default class Image extends PluginComponent {
   }
 
   handleClick() {
-    publish(`openImageModal`, 'null')
+    publish(`openLinkModal`, 'null')
     // this.editor.insertText(
     //   '![Stormtroopocat](https://octodex.github.com/images/stormtroopocat.jpg "The Stormtroopocat")',
     // )
@@ -22,8 +21,8 @@ export default class Image extends PluginComponent {
 
   render() {
     return (
-      <span className="button button-type-counter" title="image" onClick={this.handleClick}>
-        <i className="rmel-iconfont rmel-icon-image"></i>
+      <span className="button button-type-counter" title="link" onClick={this.handleClick}>
+        <i className="rmel-iconfont rmel-icon-link"></i>
       </span>
     )
   }
