@@ -1,9 +1,9 @@
 import { Button, Form, Input } from 'antd'
 
-const FormLink = ({ onSubmit }) => {
+const FormTable = ({ onSubmit }) => {
   return (
     <Form
-      name="formLink"
+      name="formTable"
       labelCol={{ span: 8 }}
       wrapperCol={{ span: 16 }}
       style={{ maxWidth: 600 }}
@@ -12,17 +12,17 @@ const FormLink = ({ onSubmit }) => {
       autoComplete="off"
     >
       <Form.Item
-        label="Tiêu đề"
-        name="title"
-        rules={[{ required: true, message: 'Nhập tiêu đề !' }]}
+        label="Số dòng"
+        name="row"
+        rules={[{ required: true, message: 'Nhập số dòng !' }]}
       >
         <Input />
       </Form.Item>
 
       <Form.Item
-        label="Đường dẫn"
-        name="link"
-        rules={[{ required: true, message: 'Nhập đường dẫn !' }]}
+        label="Số cột"
+        name="column"
+        rules={[{ required: true, message: 'Nhập số cột !' }]}
       >
         <Input />
       </Form.Item>
@@ -36,4 +36,4 @@ const FormLink = ({ onSubmit }) => {
   )
 }
 
-export default FormLink
+export default FormTable
