@@ -190,7 +190,7 @@ const HeaderFooterLayout = ({ children }) => {
         </Badge>
         <ReceiveNotifi update={handleReceiveDataFromChild} />
       </Header>
-      <Content className="site-layout" style={{ padding: '0 50px' }}>
+      <Content className="site-layout" style={{ padding: isMobile ? '0 10px' : '0 50px' }}>
         {children}
       </Content>
       <Footer style={{ textAlign: 'center' }}>Ant Design ©2023 Created by Ant UED</Footer>
