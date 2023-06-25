@@ -16,8 +16,9 @@ import { apiTagAll } from 'api/tagAPI'
 import DCard from 'components/Base/DCard'
 import Editor from 'components/markdownEditor'
 import { useEffect, useState } from 'react'
-import { blogCategoryType } from 'utils/enum'
 import { Link } from 'react-router-dom'
+import { blogCategoryType } from 'utils/enum'
+import ImageCropModal from 'containers/post/components/modal/ImageCropModal'
 
 const PostDetailBreadcrumb = () => {
   return (
@@ -39,6 +40,8 @@ const PostDetailContainer = ({ data, mode, onSubmit }) => {
   const [tags, setTags] = useState([])
   const [imageLink, setImageLink] = useState(data?.image)
   const [updateMode, setUpdateMode] = useState(false)
+  const [openImageCropModal, setOpenImageCropModal] = useState(false)
+  const [form] = Form.useForm()
 
   useEffect(() => {
     apiTagAll().then((res) => {
@@ -54,18 +57,6 @@ const PostDetailContainer = ({ data, mode, onSubmit }) => {
     setImageLink(data?.image)
   }, [data])
 
-  const handleImageCoverChange = (info) => {
-    if (info.file.status !== 'uploading') {
-    }
-    if (info.file.status === 'done') {
-      setImageLink(info.file.response.result.src)
-      message.success(`tải ảnh ${info.file.name}  thành công`)
-    } else if (info.file.status === 'error') {
-      message.error(`${info.file.response.detail}`)
-    }
-  }
-
-  const handleImageCoverRemove = () => {}
   const onFinish = (values) => {
     console.log('Success:', { ...values, image: imageLink })
     onSubmit({ ...values, image: imageLink })
@@ -73,12 +64,12 @@ const PostDetailContainer = ({ data, mode, onSubmit }) => {
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo)
   }
-
   return (
     <>
       <PostDetailBreadcrumb />
       <DCard>
         <Form
+          form={form}
           name="basic"
           labelCol={{
             span: 4,
@@ -193,17 +184,13 @@ const PostDetailContainer = ({ data, mode, onSubmit }) => {
                   src={`${process.env.REACT_APP_API_URL}${imageLink}`}
                 />
               )}
-              <Upload
+              <Button
                 disabled={!updateMode}
-                showUploadList={false}
-                name="file"
-                action={`${process.env.REACT_APP_API_URL}api/File/CoverImage`}
-                maxCount={1}
-                onChange={handleImageCoverChange}
-                onRemove={handleImageCoverRemove}
+                icon={<UploadOutlined />}
+                onClick={() => setOpenImageCropModal(true)}
               >
-                <Button icon={<UploadOutlined />}> Chọn tệp</Button>
-              </Upload>
+                Chọn tệp
+              </Button>
             </Form.Item>
             <Form.Item
               name="content"
@@ -220,6 +207,18 @@ const PostDetailContainer = ({ data, mode, onSubmit }) => {
           </Space>
         </Form>
       </DCard>
+      {openImageCropModal && (
+        <ImageCropModal
+          onCancel={() => {
+            setOpenImageCropModal(false)
+          }}
+          onSubmit={(value) => {
+            form.setFieldsValue({ image: value })
+            setImageLink(value)
+            setOpenImageCropModal(false)
+          }}
+        />
+      )}
     </>
   )
 }

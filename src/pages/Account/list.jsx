@@ -1,5 +1,7 @@
+import AccountListContainer from 'containers/account/List'
+
 const AccountListPage = () => {
-  return <div> Account list page</div>
+  return <AccountListContainer />
 }
 
 export default AccountListPage
