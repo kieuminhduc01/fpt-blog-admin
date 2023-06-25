@@ -1,4 +1,4 @@
-import { Button, Form, Input } from 'antd'
+import { Button, Form, Input, InputNumber } from 'antd'
 
 const FormTable = ({ onSubmit }) => {
   return (
@@ -11,12 +11,8 @@ const FormTable = ({ onSubmit }) => {
       onFinish={onSubmit}
       autoComplete="off"
     >
-      <Form.Item
-        label="Số dòng"
-        name="row"
-        rules={[{ required: true, message: 'Nhập số dòng !' }]}
-      >
-        <Input />
+      <Form.Item label="Số dòng" name="row" rules={[{ required: true, message: 'Nhập số dòng !' }]}>
+        <InputNumber defaultValue={2} min={1} style={{ width: '100%' }} />
       </Form.Item>
 
       <Form.Item
@@ -24,7 +20,7 @@ const FormTable = ({ onSubmit }) => {
         name="column"
         rules={[{ required: true, message: 'Nhập số cột !' }]}
       >
-        <Input />
+        <InputNumber defaultValue={2} min={1} style={{ width: '100%' }} />
       </Form.Item>
 
       <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
