@@ -14,10 +14,11 @@ import NotifiContent from 'components/notification/NotifiContent'
 import ReceiveNotifi from 'components/notification/ReceiveNotifi'
 import { useAtom } from 'jotai'
 import Cookies from 'js-cookie'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useMediaQuery } from 'react-responsive'
 import { useNavigate } from 'react-router-dom'
 import { zIndex } from 'utils/zIndex'
+import { useLocation } from 'react-router-dom'
 
 const menuItems = [
   {
@@ -98,9 +99,27 @@ const HeaderFooterLayout = ({ children }) => {
       default:
         break
     }
-
-    setCurrent(e.key)
   }
+
+  const location = useLocation()
+  useEffect(() => {
+    const key = location.pathname.split('/')[1]
+    console.log(key)
+    switch (key) {
+      case 'post':
+        setCurrent('post')
+        break
+      case 'setting':
+        setCurrent('setting')
+        break
+      case '':
+        setCurrent('account')
+        break
+      default:
+        break
+    }
+  }, [location])
+
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <div style={{ position: 'relative' }}>

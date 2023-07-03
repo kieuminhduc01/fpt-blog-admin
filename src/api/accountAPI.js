@@ -18,7 +18,7 @@ export const apiAccountResetPass = (data) => {
 
 export const apiAccountAuthPost = (data) => {
   return request({
-    url: '/Account/Auth',
+    url: '/Account/Auth-Admin',
     method: 'post',
     data,
   })

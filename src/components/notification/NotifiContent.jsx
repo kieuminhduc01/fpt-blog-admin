@@ -1,4 +1,4 @@
-import { Badge, Button, message } from 'antd'
+import { Badge, Button, Spin, message } from 'antd'
 import { GetPagingNotification } from 'api/notificationAPI'
 import { notiFyContentAtom } from 'components/atom/store'
 import { useAtom } from 'jotai'
@@ -8,12 +8,14 @@ import { formatDate } from 'utils/formatDate'
 const PERPAGE = 10
 
 const NotifiContent = () => {
+  const [loading, setLoading] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
   const [notifyContent, setNotifyContent] = useAtom(notiFyContentAtom)
   const handleClickNotify = (link) => {
     window.location.href = `${process.env.REACT_APP_CLIENT_URL}${link}`
   }
   const callApi = () => {
+    setLoading(true)
     const dataReq = {
       perPage: PERPAGE,
       currentPage: currentPage,
@@ -26,16 +28,14 @@ const NotifiContent = () => {
           created: formatDate(item.created),
         }))
         if (dataRes.length > 0) {
-          setNotifyContent((prevNotifyContent) => [
-            ...prevNotifyContent,
-            ...newData,
-          ])
+          setNotifyContent((prevNotifyContent) => [...prevNotifyContent, ...newData])
         }
         setCurrentPage((pre) => pre + 1)
       })
       .catch((err) => {
         message.error(err)
       })
+      .finally(() => setLoading(false))
   }
   useEffect(() => {
     callApi()
@@ -45,7 +45,7 @@ const NotifiContent = () => {
     callApi()
   }
   return (
-    <>
+    <Spin spinning={loading}>
       <div
         style={{
           width: '300px',
@@ -62,9 +62,7 @@ const NotifiContent = () => {
             >
               <div style={{ fontSize: '15px' }}>{item.content}</div>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <div style={{ fontSize: '13px', color: 'gray' }}>
-                  {item.created}
-                </div>
+                <div style={{ fontSize: '13px', color: 'gray' }}>{item.created}</div>
                 <Badge color={item.isRead ? '#fff' : 'red'}></Badge>
               </div>
               <hr style={{ margin: '10px 0px 10px 0px' }} />
@@ -77,7 +75,7 @@ const NotifiContent = () => {
           </Button>
         </div>
       </div>
-    </>
+    </Spin>
   )
 }
 

@@ -20,7 +20,7 @@ const CommonSetupContainer = () => {
   return (
     <>
       <PostListBreadcrumb />
-      <Space direction="vertical" size="middle">
+      <Space style={{ width: '100%' }} direction="vertical" size="middle">
         <TagSetupBlock />
         <ContactBlock />
       </Space>

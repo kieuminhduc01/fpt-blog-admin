@@ -44,6 +44,14 @@ const mdParser = new MarkdownIt({
   highlight(str, lang) {},
 }).use(insert)
 
+mdParser.renderer.rules.image = (tokens, idx, options, env, self) => {
+  const token = tokens[idx]
+  const src = token.attrs[token.attrIndex('src')][1]
+  const alt = token.content
+
+  return `<img src="${src}" alt="${alt}" /><span class="centered-sub">${alt}</span>`
+}
+
 export default function Editor({ disabled, value, onChange }) {
   const [openImageModal, setOpenImageModal] = useState(false)
   const [openLinkModal, setOpenLinkModal] = useState(false)

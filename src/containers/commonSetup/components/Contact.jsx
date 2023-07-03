@@ -77,7 +77,7 @@ const ContactBlock = () => {
     <>
       {contextHolder}
       <Row gutter={[24, 24]}>
-        <Col xs={24} lg={8}>
+        <Col xs={24} lg={12}>
           {loadingContact ? (
             <></>
           ) : (
@@ -87,7 +87,12 @@ const ContactBlock = () => {
                 labelCol={{ span: 8 }}
                 wrapperCol={{ span: 16 }}
                 style={{ maxWidth: 600 }}
-                initialValues={{ facebook: contact.facebook, linkedin: contact.linkedin }}
+                initialValues={{
+                  facebook: contact.facebook,
+                  linkedin: contact.linkedin,
+                  email: contact.email,
+                  zalo: contact.zalo,
+                }}
                 onFinish={handleSubmitFormContact}
                 onFinishFailed={() => {}}
                 autoComplete="off"
@@ -107,6 +112,20 @@ const ContactBlock = () => {
                   <Input />
                 </Form.Item>
                 <Form.Item
+                  label="Email"
+                  name="email"
+                  rules={[{ required: true, message: 'Nhập Email !' }]}
+                >
+                  <Input />
+                </Form.Item>
+                <Form.Item
+                  label="Zalo"
+                  name="zalo"
+                  rules={[{ required: true, message: 'Nhập Zalo !' }]}
+                >
+                  <Input />
+                </Form.Item>
+                <Form.Item
                   wrapperCol={{
                     offset: 8,
                     span: 4,
@@ -122,7 +141,7 @@ const ContactBlock = () => {
             </Card>
           )}
         </Col>
-        <Col xs={24} lg={16}>
+        <Col xs={24} lg={12}>
           {loadingEmailConfig ? (
             <></>
           ) : (

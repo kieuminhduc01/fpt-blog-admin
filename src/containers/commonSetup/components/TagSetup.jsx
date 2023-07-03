@@ -1,10 +1,11 @@
 import { apiTagAll, apiTagCreate, apiTagDelete, apiTagPut } from 'api/tagAPI'
 import DTag from 'components/Base/DTag'
 import { useEffect, useRef, useState } from 'react'
-import { Card, Input, Tag, message } from 'antd'
+import { Card, Input, Spin, Tag, message } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
 
 const TagSetupBlock = () => {
+  const [loadingTag, setLoadingTag] = useState(false)
   const [tags, setTags] = useState([])
   const [messageApi, contextHolder] = message.useMessage()
   const [isInputNewTag, setIsInputNewTag] = useState(false)
@@ -12,6 +13,7 @@ const TagSetupBlock = () => {
   const inputRef = useRef(null)
 
   useEffect(() => {
+    setLoadingTag(true)
     apiTagAll()
       .then((res) => {
         setTags(res.data.result)
@@ -22,6 +24,7 @@ const TagSetupBlock = () => {
           content: err.response.data.Detail,
         })
       })
+      .finally(() => setLoadingTag(false))
   }, [messageApi])
 
   useEffect(() => {
@@ -100,43 +103,47 @@ const TagSetupBlock = () => {
   }
 
   return (
-    <Card size="small" title="Cài đặt nhãn">
+    <>
       {contextHolder}
-      {tags.map((item) => (
-        <DTag
-          key={item.id}
-          onDelete={() => handleDeleteTag(item.id)}
-          onUpdate={(value) =>
-            handleUpdateTag({
-              id: item.id,
-              title: value,
-            })
-          }
-          title={item.title}
-        />
-      ))}
-      {isInputNewTag ? (
-        <Input
-          ref={inputRef}
-          type="text"
-          size="small"
-          style={{
-            width: 100,
-          }}
-          onPressEnter={handleCreateTag}
-          onBlur={() => setIsInputNewTag(false)}
-        />
-      ) : (
-        <Tag
-          onClick={() => {
-            setIsInputNewTag(true)
-          }}
-          style={{ borderStyle: 'dashed', cursor: 'pointer' }}
-        >
-          <PlusOutlined /> Thêm nhãn
-        </Tag>
-      )}
-    </Card>
+      <Card size="small" title="Cài đặt nhãn">
+        <Spin spinning={loadingTag}>
+          {tags.map((item) => (
+            <DTag
+              key={item.id}
+              onDelete={() => handleDeleteTag(item.id)}
+              onUpdate={(value) =>
+                handleUpdateTag({
+                  id: item.id,
+                  title: value,
+                })
+              }
+              title={item.title}
+            />
+          ))}
+          {isInputNewTag ? (
+            <Input
+              ref={inputRef}
+              type="text"
+              size="small"
+              style={{
+                width: 100,
+              }}
+              onPressEnter={handleCreateTag}
+              onBlur={() => setIsInputNewTag(false)}
+            />
+          ) : (
+            <Tag
+              onClick={() => {
+                setIsInputNewTag(true)
+              }}
+              style={{ borderStyle: 'dashed', cursor: 'pointer' }}
+            >
+              <PlusOutlined /> Thêm nhãn
+            </Tag>
+          )}
+        </Spin>
+      </Card>
+    </>
   )
 }
 
